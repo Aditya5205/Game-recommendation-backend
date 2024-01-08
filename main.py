@@ -1,5 +1,5 @@
 # print(flask.__version__)
-from flask import Flask, jsonify, redirect, render_template, request
+from flask import Flask, jsonify, request
 from model import generate_recommendations, generate_trending_games
 from flask_cors import CORS
 
@@ -32,24 +32,28 @@ def final_results():
         post_data = request.get_json()
         game = post_data.get('gameName')
 
-        recom1,recom2 = generate_recommendations(game)
-        if recom1 and recom2:
-            response_object['similar_games'] = recom1
-            response_object['also_played_games'] = recom2
-        elif recom1:
-            response_object['similar_games'] = recom1
-            response_object['also_played_games'] = 'e'
-        elif recom2:
-            response_object['similar_games'] = 'e'
-            response_object['also_played_games'] = recom2
-        else:
-            response_object['similar_games'] = 'e'
-            response_object['also_played_games'] = 'e'
+        if game:
+            chosen, recom1, recom2 = generate_recommendations(game)
 
-    return jsonify(response_object)
+            if recom1 and recom2:
+                response_object['similar_games'] = recom1
+                response_object['also_played_games'] = recom2
+            elif recom1:
+                response_object['similar_games'] = recom1
+                response_object['also_played_games'] = 'e'
+            elif recom2:
+                response_object['similar_games'] = 'e'
+                response_object['also_played_games'] = recom2
+            else:
+                response_object['similar_games'] = 'e'
+                response_object['also_played_games'] = 'e'
+
+            response_object['chosen_one'] = chosen
+
+        return jsonify(response_object)
 
 
-@app.route('/trd')
+@app.route('/trend')
 def send_trending_games():
     response_object = {'status': 'SUCCESS',
                        'payload': generate_trending_games()}
