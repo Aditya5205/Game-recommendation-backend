@@ -1,8 +1,11 @@
 import psycopg
 
+connection_URI = "postgresql://adityasingh19122002:oIQJqU47yRGD@ep-royal-leaf-a1jwefop.ap-southeast-1.aws.neon.tech" \
+                 "/game_db?sslmode=require"
+
 
 def access_database_content(game_name):
-    with psycopg.connect("dbname=tempDB user=postgres password=password") as conn:
+    with psycopg.connect(connection_URI) as conn:
         try:
             with conn.cursor() as cur:
                 # checking if the game name exists in database or not
@@ -51,7 +54,7 @@ def access_database_content(game_name):
 
 
 def access_database_chosen(chosen_game_name):
-    with psycopg.connect("dbname=tempDB user=postgres password=password") as conn:
+    with psycopg.connect(connection_URI) as conn:
         try:
             with conn.cursor() as cur:
                 # checking if the game name exists in database or not
@@ -88,7 +91,7 @@ def access_database_chosen(chosen_game_name):
 
 
 def access_database_collaborative(game_name):
-    with psycopg.connect("dbname=tempDB user=postgres password=password") as conn:
+    with psycopg.connect(connection_URI) as conn:
         try:
             with conn.cursor() as cur:
                 # checking if the game name exists in database or not

@@ -6,7 +6,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # setting up CORS to establish connection from vue to flask
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, origins="*")
 
 # @app.route('/login', methods=['GET', 'POST'])
 # def handle_login():
