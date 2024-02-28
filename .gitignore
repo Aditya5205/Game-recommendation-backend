@@ -5,5 +5,4 @@ model pkl/
 env/
 __pycache__/
 .idea/
-/.env
 /vercel.json
