@@ -1,7 +1,10 @@
 import psycopg
+import os
+from dotenv import load_dotenv
 
-connection_URI = "postgresql://adityasingh19122002:oIQJqU47yRGD@ep-royal-leaf-a1jwefop.ap-southeast-1.aws.neon.tech" \
-                 "/game_db?sslmode=require"
+load_dotenv('.env')
+
+connection_URI = os.getenv("CONNECTION_URI")
 
 
 def access_database_content(game_name):
