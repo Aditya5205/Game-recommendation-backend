@@ -6,7 +6,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # setting up CORS to establish connection from vue to flask
-CORS(app, origins="*")
+# CORS(app, origins="http://localhost:5173/")
+CORS(app, resources={r"/*": {"origins": "https://gamematrix.vercel.app"}})
 
 # @app.route('/login', methods=['GET', 'POST'])
 # def handle_login():
@@ -58,6 +59,5 @@ def send_trending_games():
                        'payload': generate_trending_games()}
 
     return jsonify(response_object)
-
 
 
