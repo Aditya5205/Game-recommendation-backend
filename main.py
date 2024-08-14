@@ -1,6 +1,7 @@
 # print(flask.__version__)
 from flask import Flask, jsonify, request
 from model import generate_recommendations, generate_trending_games
+from db import get_similar_search_results
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -61,3 +62,14 @@ def send_trending_games():
     return jsonify(response_object)
 
 
+@app.route('/search-result', methods=['POST'])
+def get_search_results():
+
+    # getting data from frontend
+    post_data = request.get_json()
+    search_query = post_data.get('query')
+
+    response_object = {'status': 'SUCCESS',
+                       'payload': get_similar_search_results(search_query)}
+
+    return jsonify(response_object)

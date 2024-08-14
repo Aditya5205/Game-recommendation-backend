@@ -114,7 +114,7 @@ def access_database_collaborative(game_name):
 
                 recom_indexes = cur.fetchone()
 
-                content_based_data = []
+                collaborative_data = []
                 for ind in recom_indexes:
                     cur.execute("""
                         SELECT "Title", "Original Price", "Game Description", "app_id"  FROM collab_table 
@@ -123,7 +123,7 @@ def access_database_collaborative(game_name):
 
                     row_data = cur.fetchone()
 
-                    content_based_data.append({
+                    collaborative_data.append({
                         "Name": row_data[0],
                         "Price": row_data[1],
                         "Description": row_data[2],
@@ -132,7 +132,7 @@ def access_database_collaborative(game_name):
                     })
 
                 conn.commit()
-                return content_based_data
+                return collaborative_data
 
         except Exception as err:
             print("Oops! An exception has occurred:", err)
@@ -141,3 +141,30 @@ def access_database_collaborative(game_name):
         finally:
             conn.close()
 
+
+def get_similar_search_results(search_query):
+    with psycopg.connect(connection_URI) as conn:
+        try:
+            with conn.cursor() as cur:
+
+                cur.execute("""
+                    SELECT "Title" FROM collab_table 
+                    WHERE LOWER("Title") LIKE LOWER(%s) LIMIT 5;
+                """, ['%{}%'.format(search_query)])
+
+                query_results = cur.fetchall()
+
+                # processing query_results
+                result = []
+                for data in query_results:
+                    result.append(data[0])
+
+                conn.commit()
+                return result
+
+        except Exception as err:
+            print("Oops! An exception has occurred:", err)
+            print("Exception TYPE:", type(err))
+
+        finally:
+            conn.close()
